@@ -12,7 +12,6 @@ const Record = ({ audioURL, setAudioURL }) => {
 
   const [timeMaxValue, setTimeMaxValue] = useState(20);
   const [timer, setTimer] = useState(0);
-  const debounce = useRef(0);
   const timerId = useRef(0);
 
   const toggleRecord = async () => {
@@ -70,16 +69,18 @@ const Record = ({ audioURL, setAudioURL }) => {
     }
   };
 
-  const changeHandler = ({ target: { value } }) => {
-    clearTimeout(debounce.current);
-    debounce.current = setTimeout(() => setTimeMaxValue(Number(value)), 300);
-  };
-
   return (
     <StyledRecord>
       <p>최대 녹음 시간 {timeMaxValue}s</p>
       <p>현재 녹음 시간 {timer}s</p>
-      <input type='range' onChange={changeHandler} max={100} min={3} defaultValue={20} />
+      <input
+        type='range' //
+        onChange={({ target: { value } }) => setTimeMaxValue(Number(value))}
+        max={100}
+        min={3}
+        defaultValue={20}
+        disabled={isRecording}
+      />
       <audio ref={audioElement} src={audioURL} onEnded={() => setIsPlaying(false)} />
       <div className='buttonContainer'>
         <button onClick={toggleRecord}>{isRecording ? <BsSquareFill /> : <BsFillRecordFill />}</button>
