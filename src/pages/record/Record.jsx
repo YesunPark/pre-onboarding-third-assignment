@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { BsFillRecordFill, BsSquareFill } from 'react-icons/bs';
 import styled from 'styled-components';
 
@@ -10,8 +10,10 @@ const Record = ({ audioURL, setAudioURL }) => {
   const audioArray = useRef([]);
   const audioElement = useRef(null);
 
-  const [timeMaxValue, setTimeMaxValue] = useState(0);
+  const [timeMaxValue, setTimeMaxValue] = useState(20);
+  const [timer, setTimer] = useState(0);
   const debounce = useRef(0);
+  const timerId = useRef(0);
 
   const toggleRecord = async () => {
     if (!isRecording) {
@@ -30,10 +32,17 @@ const Record = ({ audioURL, setAudioURL }) => {
 
           setAudioURL(window.URL.createObjectURL(blob));
           setIsRecording(false);
+
+          clearInterval(timerId.current);
+          setTimer(0);
         };
 
         recorder.start();
         mediaRecorderRef.current = recorder;
+
+        timerId.current = setInterval(() => {
+          setTimer(prev => prev + 1);
+        }, 1000);
       } catch (error) {
         console.log(error);
       }
@@ -41,6 +50,12 @@ const Record = ({ audioURL, setAudioURL }) => {
       mediaRecorderRef.current.stop();
     }
   };
+
+  useEffect(() => {
+    if (mediaRecorderRef.current && timer === timeMaxValue) {
+      mediaRecorderRef.current.stop();
+    }
+  }, [timer]);
 
   const toggleAudio = () => {
     if (audioURL) {
@@ -57,13 +72,14 @@ const Record = ({ audioURL, setAudioURL }) => {
 
   const changeHandler = ({ target: { value } }) => {
     clearTimeout(debounce.current);
-    debounce.current = setTimeout(() => setTimeMaxValue(value), 300);
+    debounce.current = setTimeout(() => setTimeMaxValue(Number(value)), 300);
   };
 
   return (
     <StyledRecord>
       <p>최대 녹음 시간 {timeMaxValue}s</p>
-      <input type='range' onChange={changeHandler} max={100} min={10} />
+      <p>현재 녹음 시간 {timer}s</p>
+      <input type='range' onChange={changeHandler} max={100} min={3} defaultValue={20} />
       <audio ref={audioElement} src={audioURL} onEnded={() => setIsPlaying(false)} />
       <div className='buttonContainer'>
         <button onClick={toggleRecord}>{isRecording ? <BsSquareFill /> : <BsFillRecordFill />}</button>
