@@ -1,14 +1,13 @@
 import { useRef, useState } from 'react';
-import { BsPlayFill, BsSquareFill } from 'react-icons/bs';
+import { BsFillRecordFill, BsSquareFill } from 'react-icons/bs';
 import styled from 'styled-components';
 
-const Record = () => {
+const Record = ({ audioURL, setAudioURL }) => {
   const [isRecording, setIsRecording] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
 
   const mediaRecorderRef = useRef();
   const audioArray = useRef([]);
-  const [audioURL, setAudioURL] = useState('');
   const audioElement = useRef(null);
 
   const [timeMaxValue, setTimeMaxValue] = useState(0);
@@ -43,10 +42,16 @@ const Record = () => {
     }
   };
 
-  const startAudio = () => {
+  const toggleAudio = () => {
     if (audioURL) {
-      setIsPlaying(true);
-      audioElement.current.play();
+      if (!isPlaying) {
+        setIsPlaying(true);
+        audioElement.current.play();
+      } else {
+        audioElement.current.pause();
+        audioElement.current.currentTime = 0;
+        setIsPlaying(false);
+      }
     }
   };
 
@@ -61,10 +66,11 @@ const Record = () => {
       <input type='range' onChange={changeHandler} max={100} min={10} />
       <audio ref={audioElement} src={audioURL} onEnded={() => setIsPlaying(false)} />
       <div className='buttonContainer'>
-        <button onClick={toggleRecord}>{isRecording ? <BsSquareFill /> : <BsPlayFill />}</button>
-        <button onClick={startAudio}>재생</button>
+        <button onClick={toggleRecord}>{isRecording ? <BsSquareFill /> : <BsFillRecordFill />}</button>
+        <button onClick={toggleAudio}>재생</button>
       </div>
-      <p>{isPlaying ? '재생중입니다' : '재생할까요'}</p>
+      <p>{isRecording ? '녹음멈춤' : '녹음시작'}</p>
+      <p>{isPlaying ? '멈춤' : '재생'}</p>
     </StyledRecord>
   );
 };
