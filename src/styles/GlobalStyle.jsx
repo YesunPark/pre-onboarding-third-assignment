@@ -10,9 +10,10 @@ const GlobalStyle = createGlobalStyle`
 
   body { 
     max-width: 600px;
+    width: 100%;
     margin: auto;
     background-color: #3eacac;
-    color: ${({ theme }) => theme.recordingColor};
+    color: ${({ theme }) => theme.mainColor};
     font-family: 'Noto Sans KR', sans-serif;
   }
 
