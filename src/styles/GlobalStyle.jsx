@@ -8,6 +8,14 @@ const GlobalStyle = createGlobalStyle`
     box-sizing: border-box;
   }
 
+  body { 
+    max-width: 600px;
+    margin: auto;
+    background-color: #3eacac;
+    color: ${({ theme }) => theme.recordingColor};
+    font-family: 'Noto Sans KR', sans-serif;
+  }
+
   a {
     text-decoration: none;
   }
@@ -18,11 +26,7 @@ const GlobalStyle = createGlobalStyle`
     }
   }
 
-  body { 
-    font-family: 'Noto Sans KR', sans-serif;
-    background-color: #3eacac;
-    color: ${({ theme }) => theme.recordingColor};
-  }
+
 `;
 
 export default GlobalStyle;
