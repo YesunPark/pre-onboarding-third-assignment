@@ -86,7 +86,7 @@ const Record = () => {
       </StyledRecord>
       <ButtonWrapper>
         <StartButton isRecording={isRecording} onClick={toggleRecord} disabled={isPlaying}>
-          {audioURL && !isSaving && <span>다시 녹음하기</span>}
+          {audioURL && !isSaving && <span>다시 녹음</span>}
           {isRecording ? <BsSquareFill size={30} /> : <BsFillRecordFill size={30} />}
         </StartButton>
         {!isRecording && !isSaving && <PlayBtn isPlaying={isPlaying} setIsPlaying={setIsPlaying} audioURL={audioURL} />}
