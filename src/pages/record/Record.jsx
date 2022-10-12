@@ -3,6 +3,7 @@ import { BsFillRecordFill, BsSquareFill } from 'react-icons/bs';
 import { ref, uploadBytes } from 'firebase/storage';
 import styled from 'styled-components';
 import storage from '../../firebase/storage';
+import RecordingMordal from '../../components/record/RecordingMordal';
 
 const Record = () => {
   const [isRecording, setIsRecording] = useState(false);
@@ -89,26 +90,31 @@ const Record = () => {
   };
 
   return (
-    <StyledRecord>
-      <p>최대 녹음 시간 {timeMaxValue}s</p>
-      <p>현재 녹음 시간 {timer}s</p>
-      <input
-        type='range' //
-        onChange={({ target: { value } }) => setTimeMaxValue(Number(value))}
-        max={100}
-        min={3}
-        defaultValue={20}
-        disabled={isRecording}
-      />
-      <audio ref={audioElement} src={audioURL} onEnded={() => setIsPlaying(false)} />
-      <div className='buttonContainer'>
-        <button onClick={toggleRecord}>{isRecording ? <BsSquareFill /> : <BsFillRecordFill />}</button>
-        <button onClick={toggleAudio}>재생</button>
-      </div>
-      <p>{isRecording ? '녹음멈춤' : '녹음시작'}</p>
-      <p>{isPlaying ? '멈춤' : '재생'}</p>
+    <>
+      <StyledRecord>
+        <p>최대 녹음 시간 {timeMaxValue}s</p>
+        <p>현재 녹음 시간 {timer}s</p>
+        <input
+          type='range' //
+          onChange={({ target: { value } }) => setTimeMaxValue(Number(value))}
+          max={100}
+          min={3}
+          defaultValue={20}
+          disabled={isRecording}
+        />
+        <audio ref={audioElement} src={audioURL} onEnded={() => setIsPlaying(false)} />
+        <div className='buttonContainer'>
+          <button onClick={toggleAudio}>{isPlaying ? '멈춤' : '재생'}</button>
+        </div>
+      </StyledRecord>
+      <Wrapper>
+        <StartButton isRecording={isRecording} onClick={toggleRecord} disabled={isPlaying}>
+          {isRecording ? <BsSquareFill size={30} /> : <BsFillRecordFill size={30} />}
+        </StartButton>
+      </Wrapper>
+      {isRecording && <RecordingMordal />}
       {isSaving && <p>저장중...</p>}
-    </StyledRecord>
+    </>
   );
 };
 
@@ -125,6 +131,26 @@ const StyledRecord = styled.div`
   input {
     width: 100%;
   }
+`;
+
+const Wrapper = styled.div`
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
+const StartButton = styled.button`
+  margin-top: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 50%;
+  padding: 10px 40px;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  color: ${({ theme, isRecording }) => (isRecording ? 'black' : theme.recordingColor)};
 `;
 
 export default Record;
