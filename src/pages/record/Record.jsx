@@ -1,11 +1,15 @@
 import { useEffect, useRef, useState } from 'react';
+import { AiOutlineUnorderedList } from 'react-icons/ai';
 import { BsFillRecordFill, BsSquareFill } from 'react-icons/bs';
 import { ref, uploadBytes } from 'firebase/storage';
 import styled from 'styled-components';
 import storage from '../../firebase/storage';
 import RecordingMordal from '../../components/record/RecordingMordal';
+import { useNavigate } from 'react-router-dom';
 
 const Record = () => {
+  const navigate = useNavigate();
+
   const [isRecording, setIsRecording] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
@@ -92,6 +96,9 @@ const Record = () => {
   return (
     <>
       <StyledRecord>
+        <ListButton onClick={() => navigate('/play')}>
+          <AiOutlineUnorderedList size={30} />
+        </ListButton>
         <p>최대 녹음 시간 {timeMaxValue}s</p>
         <p>현재 녹음 시간 {timer}s</p>
         <input
@@ -118,11 +125,21 @@ const Record = () => {
   );
 };
 
+const ListButton = styled.button`
+  width: fit-content;
+  aspect-ratio: 1 / 1;
+  border: 2px solid white;
+  background-color: transparent;
+  color: white;
+  border-radius: 10px;
+  margin-bottom: 20px;
+  cursor: pointer;
+`;
+
 const StyledRecord = styled.div`
   padding-top: 100px;
   display: flex;
   flex-direction: column;
-  align-items: center;
 
   div.buttonContainer {
     display: flex;

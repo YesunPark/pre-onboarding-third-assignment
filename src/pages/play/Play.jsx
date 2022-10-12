@@ -5,9 +5,17 @@ import styled from 'styled-components';
 import storage from '../../firebase/storage';
 
 const Play = () => {
-  const [audioURL, setAudioURL] = useState('');
+  const [curAudioURL, setCurAudioURL] = useState('');
+  const [audioList, setAudioList] = useState();
 
-  return <audio src={audioURL} />;
+  useEffect(() => {
+    (async () => {
+      const { items } = await listAll(ref(storage));
+      console.log(items);
+    })();
+  });
+
+  return <></>;
 };
 
 export default Play;
