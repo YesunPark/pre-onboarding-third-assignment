@@ -6,6 +6,7 @@ import styled from 'styled-components';
 import storage from '../../firebase/storage';
 import RecordingMordal from '../../components/record/RecordingMordal';
 import { useNavigate } from 'react-router-dom';
+import PlayBtn from '../../components/record/PlayBtn';
 
 const Record = () => {
   const navigate = useNavigate();
@@ -13,11 +14,9 @@ const Record = () => {
   const [isRecording, setIsRecording] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
-
   const [audioURL, setAudioURL] = useState('');
   const mediaRecorderRef = useRef();
   const audioArray = useRef([]);
-  const audioElement = useRef(null);
 
   const [timeMaxValue, setTimeMaxValue] = useState(20);
   const [timer, setTimer] = useState(0);
@@ -81,19 +80,6 @@ const Record = () => {
     }
   }, [timer]);
 
-  const toggleAudio = () => {
-    if (audioURL) {
-      if (!isPlaying) {
-        setIsPlaying(true);
-        audioElement.current.play();
-      } else {
-        audioElement.current.pause();
-        audioElement.current.currentTime = 0;
-        setIsPlaying(false);
-      }
-    }
-  };
-
   return (
     <>
       <StyledRecord>
@@ -102,26 +88,16 @@ const Record = () => {
         </ListButton>
         <p>최대 녹음 시간 {timeMaxValue}s</p>
         <p>현재 녹음 시간 {timer}s</p>
-        <input
-          type='range' //
-          onChange={({ target: { value } }) => setTimeMaxValue(Number(value))}
-          max={100}
-          min={3}
-          defaultValue={20}
-          disabled={isRecording}
-        />
-        <audio ref={audioElement} src={audioURL} onEnded={() => setIsPlaying(false)} />
-        <div className='buttonContainer'>
-          <button onClick={toggleAudio}>{isPlaying ? '멈춤' : '재생'}</button>
-        </div>
+        <input type='range' onChange={({ target: { value } }) => setTimeMaxValue(Number(value))} max={100} min={3} defaultValue={20} disabled={isRecording} />
       </StyledRecord>
-      <Wrapper>
+      <ButtonWrapper>
         <StartButton isRecording={isRecording} onClick={toggleRecord} disabled={isPlaying}>
+          {audioURL && !isSaving && <span>다시 녹음</span>}
           {isRecording ? <BsSquareFill size={30} /> : <BsFillRecordFill size={30} />}
         </StartButton>
-      </Wrapper>
+        {!isRecording && <PlayBtn isPlaying={isPlaying} setIsPlaying={setIsPlaying} isSaving={isSaving} audioURL={audioURL} />}
+      </ButtonWrapper>
       {isRecording && <RecordingMordal />}
-      {isSaving && <p>저장중...</p>}
     </>
   );
 };
@@ -142,28 +118,25 @@ const StyledRecord = styled.div`
   display: flex;
   flex-direction: column;
 
-  div.buttonContainer {
-    display: flex;
-  }
-
   input {
     width: 100%;
   }
 `;
 
-const Wrapper = styled.div`
+const ButtonWrapper = styled.div`
   position: relative;
   display: flex;
-  justify-content: center;
-  align-items: center;
+  flex-direction: column;
+  /* justify-content: center; */
+  margin: auto;
 `;
 
-const StartButton = styled.button`
-  margin-top: 20px;
+export const StartButton = styled.button`
   display: flex;
   align-items: center;
   justify-content: center;
   width: 50%;
+  margin: 20px auto 0px;
   padding: 10px 40px;
   border: none;
   border-radius: 10px;
