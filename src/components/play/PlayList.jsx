@@ -1,12 +1,16 @@
 import styled from 'styled-components';
 
-const PlayList = ({ storageRef }) => {
-  return <StyledList>{storageRef.name}</StyledList>;
+const PlayList = ({ storageRef, selectHandler, curAudioName }) => {
+  return (
+    <StyledList isPlaying={curAudioName === storageRef.name} onClick={() => selectHandler(storageRef)}>
+      {storageRef.name}
+    </StyledList>
+  );
 };
 
 const StyledList = styled.li`
-  padding: 20px 0;
-  border-bottom: 1px solid white;
+  padding: 20px 10px;
+  background-color: ${({ isPlaying }) => (isPlaying ? '#63dada' : '#3eacac')};
 `;
 
 export default PlayList;
