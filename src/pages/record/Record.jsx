@@ -35,6 +35,7 @@ const Record = () => {
 
         recorder.onstop = async () => {
           const blob = new Blob(audioArray.current);
+          console.log(blob);
           audioArray.current.splice(0);
           clearInterval(timerId.current);
           setTimer(0);
@@ -50,8 +51,9 @@ const Record = () => {
             const date = now.getDate();
             const hours = now.getHours();
             const minute = now.getMinutes();
+            const seconds = now.getSeconds();
 
-            const storageRef = ref(storage, `${year}-${month}-${date}-${hours}-${minute}.webm`);
+            const storageRef = ref(storage, `${year}-${month}-${date}-${hours}-${minute}-${seconds}.webm`);
             setIsSaving(true);
             await uploadBytes(storageRef, blob);
             setIsSaving(false);
