@@ -1,25 +1,42 @@
 import styled from 'styled-components';
-import { BsDownload } from 'react-icons/bs';
+import { BsDownload, BsFillTrashFill } from 'react-icons/bs';
 
-const PlayList = ({ storageRef, selectHandler, curAudioName, downloadHandler }) => {
+const PlayList = ({ storageRef, handleSelect, curAudioName, handleDownload, handleRemove }) => {
   return (
-    <StyledList isPlaying={curAudioName === storageRef.name} onClick={() => selectHandler(storageRef)}>
+    <StyledList isPlaying={curAudioName === storageRef.name} onClick={() => handleSelect(storageRef)}>
       {storageRef.name}
-      {curAudioName === storageRef.name && <DownloadIcon onClick={downloadHandler} />}
+      {curAudioName === storageRef.name && (
+        <BtnContainer>
+          <DownloadIcon onClick={handleDownload} />
+          <BsFillTrashFill onClick={handleRemove} />
+        </BtnContainer>
+      )}
     </StyledList>
   );
 };
-
-const DownloadIcon = styled(BsDownload)`
-  cursor: pointer;
-`;
 
 const StyledList = styled.li`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 20px 20px;
+  gap: 10px;
+  padding: 20px;
   background-color: ${({ isPlaying }) => (isPlaying ? '#63dada' : '#3eacac')};
+  cursor: pointer;
+
+  &:hover {
+    background-color: ${({ isPlaying }) => (isPlaying ? '#63dada' : '#48b6b6')};
+  }
+`;
+
+const DownloadIcon = styled(BsDownload)`
+  cursor: pointer;
+`;
+
+const BtnContainer = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 20px;
 `;
 
 export default PlayList;

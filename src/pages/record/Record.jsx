@@ -109,7 +109,7 @@ const Record = () => {
 };
 
 const StyledRecord = styled.div`
-  padding-top: 100px;
+  padding: 20px 10px 0 10px;
   display: flex;
   flex-direction: column;
 
