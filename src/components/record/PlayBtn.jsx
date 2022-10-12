@@ -1,6 +1,7 @@
 import { useRef } from 'react';
 import { IoIosPlay, IoMdPause } from 'react-icons/io';
 import styled from 'styled-components';
+import { StartButton } from '../../pages/record/Record';
 
 const PlayBtn = ({ isPlaying, setIsPlaying, audioURL }) => {
   const audioElement = useRef(null);
@@ -19,16 +20,23 @@ const PlayBtn = ({ isPlaying, setIsPlaying, audioURL }) => {
   };
 
   return (
-    <PlayBtnContainer>
-      <audio ref={audioElement} src={audioURL} onEnded={() => setIsPlaying(false)} onClick={toggleAudio}>
-        오디오 재생 x
-      </audio>
-      <span>{isPlaying ? '중지' : '재생'}</span>
-      <button onClick={toggleAudio}>{isPlaying ? <IoMdPause /> : <IoIosPlay />}</button>
-    </PlayBtnContainer>
+    audioURL && (
+      <PlayBtnContainer>
+        <StartButton onClick={toggleAudio}>
+          <span className='playBtn'>{isPlaying ? '중지' : '재생'}</span>
+        </StartButton>
+        <audio ref={audioElement} src={audioURL} onEnded={() => setIsPlaying(false)} onClick={toggleAudio}>
+          오디오 재생 x
+        </audio>
+      </PlayBtnContainer>
+    )
   );
 };
 
-const PlayBtnContainer = styled.div``;
+const PlayBtnContainer = styled.div`
+  .playBtn {
+    line-height: 30px;
+  }
+`;
 
 export default PlayBtn;

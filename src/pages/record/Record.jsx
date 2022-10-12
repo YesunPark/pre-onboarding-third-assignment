@@ -84,14 +84,15 @@ const Record = () => {
         <p>현재 녹음 시간 {timer}s</p>
         <input type='range' onChange={({ target: { value } }) => setTimeMaxValue(Number(value))} max={100} min={3} defaultValue={20} disabled={isRecording} />
       </StyledRecord>
-      <Wrapper>
+      <ButtonWrapper>
         <StartButton isRecording={isRecording} onClick={toggleRecord} disabled={isPlaying}>
+          {audioURL && !isSaving && <span>다시 녹음하기</span>}
           {isRecording ? <BsSquareFill size={30} /> : <BsFillRecordFill size={30} />}
         </StartButton>
-      </Wrapper>
+        {!isRecording && !isSaving && <PlayBtn isPlaying={isPlaying} setIsPlaying={setIsPlaying} audioURL={audioURL} />}
+        {isSaving && <div>저장중...</div>}
+      </ButtonWrapper>
       {isRecording && <RecordingMordal />}
-      {isSaving && <p>저장중...</p>}
-      {!isRecording && <PlayBtn isPlaying={isPlaying} setIsPlaying={setIsPlaying} audioURL={audioURL} />}
     </>
   );
 };
@@ -107,19 +108,19 @@ const StyledRecord = styled.div`
   }
 `;
 
-const Wrapper = styled.div`
+const ButtonWrapper = styled.div`
   position: relative;
   display: flex;
-  justify-content: center;
-  align-items: center;
+  flex-direction: column;
+  margin: auto;
 `;
 
-const StartButton = styled.button`
-  margin-top: 20px;
+export const StartButton = styled.button`
   display: flex;
   align-items: center;
   justify-content: center;
   width: 50%;
+  margin: 20px auto 0px;
   padding: 10px 40px;
   border: none;
   border-radius: 10px;
