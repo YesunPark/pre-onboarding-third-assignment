@@ -35,7 +35,6 @@ const Record = () => {
 
         recorder.onstop = async () => {
           const blob = new Blob(audioArray.current);
-          console.log(blob);
           audioArray.current.splice(0);
           clearInterval(timerId.current);
           setTimer(0);

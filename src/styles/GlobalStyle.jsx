@@ -12,6 +12,7 @@ const GlobalStyle = createGlobalStyle`
     max-width: 600px;
     width: 100%;
     margin: auto;
+    padding: 0 10px;
     background-color: #3eacac;
     color: ${({ theme }) => theme.mainColor};
     font-family: 'Noto Sans KR', sans-serif;
