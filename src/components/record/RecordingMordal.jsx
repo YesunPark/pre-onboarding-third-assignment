@@ -34,6 +34,7 @@ const ModalContainer = styled.div`
 const RedDot = styled.div`
   width: 15px;
   height: 15px;
+  aspect-ratio: 1 / 1;
   background: red;
   border-radius: 50%;
   animation: ${Blinking} 0.8s infinite alternate;

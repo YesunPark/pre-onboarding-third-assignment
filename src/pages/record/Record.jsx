@@ -1,15 +1,17 @@
 import { useEffect, useRef, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { AiOutlineUnorderedList } from 'react-icons/ai';
 import { BsFillRecordFill, BsSquareFill } from 'react-icons/bs';
 import { ref, uploadBytes } from 'firebase/storage';
 import styled from 'styled-components';
-
 import storage from '../../firebase/storage';
-
 import RecordingMordal from '../../components/record/RecordingMordal';
 import PlayBtn from '../../components/record/PlayBtn';
 import DownloadBtn from '../../components/record/DownloadBtn';
 
 const Record = () => {
+  const navigate = useNavigate();
+
   const [isRecording, setIsRecording] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
@@ -48,8 +50,9 @@ const Record = () => {
             const date = now.getDate();
             const hours = now.getHours();
             const minute = now.getMinutes();
+            const seconds = now.getSeconds();
 
-            const storageRef = ref(storage, `${year}-${month}-${date}-${hours}-${minute}.webm`);
+            const storageRef = ref(storage, `${year}-${month}-${date}-${hours}-${minute}-${seconds}.webm`);
             setIsSaving(true);
             await uploadBytes(storageRef, blob);
             setIsSaving(false);
@@ -81,6 +84,9 @@ const Record = () => {
   return (
     <>
       <StyledRecord>
+        <ListButton onClick={() => navigate('/play')}>
+          <AiOutlineUnorderedList size={30} />
+        </ListButton>
         <p>최대 녹음 시간 {timeMaxValue}s</p>
         <p>현재 녹음 시간 {timer}s</p>
         <input type='range' onChange={({ target: { value } }) => setTimeMaxValue(Number(value))} max={100} min={3} defaultValue={20} disabled={isRecording} />
@@ -106,11 +112,21 @@ const StyledRecord = styled.div`
   padding-top: 100px;
   display: flex;
   flex-direction: column;
-  align-items: center;
 
   input {
     width: 100%;
   }
+`;
+
+const ListButton = styled.button`
+  width: fit-content;
+  aspect-ratio: 1 / 1;
+  border: 2px solid white;
+  background-color: transparent;
+  color: white;
+  border-radius: 10px;
+  margin-bottom: 20px;
+  cursor: pointer;
 `;
 
 const ButtonWrapper = styled.div`
