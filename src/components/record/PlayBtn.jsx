@@ -3,7 +3,7 @@ import { IoIosPlay, IoMdPause } from 'react-icons/io';
 import styled from 'styled-components';
 import { StartButton } from '../../pages/record/Record';
 
-const PlayBtn = ({ isPlaying, setIsPlaying, audioURL }) => {
+const PlayBtn = ({ isPlaying, setIsPlaying, isSaving, audioURL }) => {
   const audioElement = useRef(null);
 
   const toggleAudio = () => {
@@ -23,7 +23,8 @@ const PlayBtn = ({ isPlaying, setIsPlaying, audioURL }) => {
     audioURL && (
       <PlayBtnContainer>
         <StartButton onClick={toggleAudio}>
-          <span className='playBtn'>{isPlaying ? '중지' : '재생'}</span>
+          {!isSaving && <span className='playBtn'>{isPlaying ? '중지' : '재생'}</span>}
+          {isSaving && <span className='playBtn'> 저장 중...</span>}
         </StartButton>
         <audio ref={audioElement} src={audioURL} onEnded={() => setIsPlaying(false)} onClick={toggleAudio}>
           오디오 재생 x

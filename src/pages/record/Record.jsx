@@ -89,8 +89,7 @@ const Record = () => {
           {audioURL && !isSaving && <span>다시 녹음</span>}
           {isRecording ? <BsSquareFill size={30} /> : <BsFillRecordFill size={30} />}
         </StartButton>
-        {!isRecording && !isSaving && <PlayBtn isPlaying={isPlaying} setIsPlaying={setIsPlaying} audioURL={audioURL} />}
-        {isSaving && <div>저장중...</div>}
+        {!isRecording && <PlayBtn isPlaying={isPlaying} setIsPlaying={setIsPlaying} isSaving={isSaving} audioURL={audioURL} />}
       </ButtonWrapper>
       {isRecording && <RecordingMordal />}
     </>
@@ -112,6 +111,7 @@ const ButtonWrapper = styled.div`
   position: relative;
   display: flex;
   flex-direction: column;
+  /* justify-content: center; */
   margin: auto;
 `;
 
