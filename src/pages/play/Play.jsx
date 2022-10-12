@@ -2,7 +2,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { AiOutlineArrowLeft } from 'react-icons/ai';
 import { BsStopCircle, BsPlayCircle } from 'react-icons/bs';
-import { ref, listAll, getDownloadURL } from 'firebase/storage';
+import { ref, listAll, getDownloadURL, deleteObject } from 'firebase/storage';
 import styled from 'styled-components';
 import storage from '../../firebase/storage';
 import PlayList from '../../components/play/PlayList';
@@ -14,6 +14,7 @@ const Play = () => {
 
   const [isPlaying, setIsPlaying] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [isListLoading, setIsListLoading] = useState(false);
 
   const [curAudioURL, setCurAudioURL] = useState('');
   const [curAudioName, setCurAudioName] = useState('');
@@ -25,8 +26,15 @@ const Play = () => {
 
   useEffect(() => {
     (async () => {
-      const { items } = await listAll(ref(storage));
-      setAudioList(items.reverse());
+      setIsListLoading(true);
+      try {
+        const { items } = await listAll(ref(storage));
+        setAudioList(items.reverse());
+        setIsListLoading(false);
+      } catch (error) {
+        console.log(error);
+        setIsListLoading(false);
+      }
     })();
   }, []);
 
@@ -79,6 +87,21 @@ const Play = () => {
     link.remove();
   };
 
+  const removeHandler = async () => {
+    setIsListLoading(true);
+    const removeRef = ref(storage, curAudioName);
+
+    try {
+      await deleteObject(removeRef);
+      const { items } = await listAll(ref(storage));
+      setAudioList(items.reverse());
+      setIsListLoading(false);
+    } catch (error) {
+      console.log(error);
+      setIsListLoading(false);
+    }
+  };
+
   return (
     <Container>
       <Title>
@@ -88,7 +111,7 @@ const Play = () => {
         </div>
       </Title>
 
-      {audioList ? (
+      {!isListLoading && audioList ? (
         <ul>
           {audioList.map(storageRef => (
             <PlayList //
@@ -97,6 +120,7 @@ const Play = () => {
               selectHandler={selectHandler}
               curAudioName={curAudioName}
               downloadHandler={downloadHandler}
+              removeHandler={removeHandler}
             />
           ))}
         </ul>
