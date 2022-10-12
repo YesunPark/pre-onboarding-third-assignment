@@ -98,7 +98,7 @@ const Play = () => {
       <PlayBar>
         <div className='container'>
           <audio src={curAudioURL} ref={audioElement} onEnded={stopHandler} />
-          <h3>{curAudioName}</h3>
+          <h3>{isLoading ? '불러오는 중...' : curAudioName}</h3>
           <p>{time}s</p>
           {isPlaying ? <BsStopCircle onClick={stopHandler} size={40} /> : <BsPlayCircle onClick={playHandler} size={40} />}
         </div>
