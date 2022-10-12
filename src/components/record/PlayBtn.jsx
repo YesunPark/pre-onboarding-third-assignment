@@ -1,12 +1,11 @@
-import { useRef } from 'react';
-import { IoIosPlay, IoMdPause } from 'react-icons/io';
-import styled from 'styled-components';
+import { useEffect, useRef, useState } from 'react';
 import { StartButton } from '../../pages/record/Record';
 
 const PlayBtn = ({ isPlaying, setIsPlaying, isSaving, audioURL }) => {
+  const [playTime, setPlayTime] = useState(0);
   const audioElement = useRef(null);
 
-  const toggleAudio = () => {
+  const clickPlayBtn = () => {
     if (audioURL) {
       if (!isPlaying) {
         setIsPlaying(true);
@@ -19,23 +18,36 @@ const PlayBtn = ({ isPlaying, setIsPlaying, isSaving, audioURL }) => {
     }
   };
 
+  useEffect(() => {
+    const playTime = setInterval(() => {
+      if (isPlaying) {
+        setPlayTime(prev => prev + 1);
+      }
+    }, 1000);
+    return () => {
+      clearInterval(playTime);
+      setPlayTime(0);
+    };
+  }, [isPlaying]);
+
   return (
     audioURL && (
-      <PlayBtnContainer>
-        <StartButton onClick={toggleAudio}>
-          {!isSaving && <span className='playBtn'>{!isSaving && isPlaying ? '중지' : '재생'}</span>}
-          {isSaving && <span className='playBtn'> 저장 중...</span>}
+      <>
+        <audio
+          ref={audioElement}
+          src={audioURL}
+          onEnded={() => {
+            setIsPlaying(false);
+          }}
+        />
+        <StartButton disabled={isSaving} onClick={clickPlayBtn}>
+          {isSaving && '저장 중...'}
+          {!isSaving && !isPlaying && '재생'}
+          {!isSaving && isPlaying && `0:${playTime} 중지`}
         </StartButton>
-        <audio ref={audioElement} src={audioURL} onEnded={() => setIsPlaying(false)} onClick={toggleAudio} />
-      </PlayBtnContainer>
+      </>
     )
   );
 };
-
-const PlayBtnContainer = styled.div`
-  .playBtn {
-    line-height: 30px;
-  }
-`;
 
 export default PlayBtn;

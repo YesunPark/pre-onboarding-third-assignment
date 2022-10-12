@@ -7,6 +7,7 @@ import storage from '../../firebase/storage';
 
 import RecordingMordal from '../../components/record/RecordingMordal';
 import PlayBtn from '../../components/record/PlayBtn';
+import DownloadBtn from '../../components/record/DownloadBtn';
 
 const Record = () => {
   const [isRecording, setIsRecording] = useState(false);
@@ -89,7 +90,12 @@ const Record = () => {
           {audioURL && !isSaving && <span>다시 녹음</span>}
           {isRecording ? <BsSquareFill size={30} /> : <BsFillRecordFill size={30} />}
         </StartButton>
-        {!isRecording && <PlayBtn isPlaying={isPlaying} setIsPlaying={setIsPlaying} isSaving={isSaving} audioURL={audioURL} />}
+        {!isRecording && (
+          <>
+            <PlayBtn isPlaying={isPlaying} setIsPlaying={setIsPlaying} isSaving={isSaving} audioURL={audioURL} />
+            {!isSaving && !isPlaying && <DownloadBtn audioURL={audioURL} />}
+          </>
+        )}
       </ButtonWrapper>
       {isRecording && <RecordingMordal />}
     </>
@@ -111,7 +117,6 @@ const ButtonWrapper = styled.div`
   position: relative;
   display: flex;
   flex-direction: column;
-  /* justify-content: center; */
   margin: auto;
 `;
 
@@ -120,12 +125,12 @@ export const StartButton = styled.button`
   align-items: center;
   justify-content: center;
   width: 50%;
+  height: 50px;
   margin: 20px auto 0px;
-  padding: 10px 40px;
   border: none;
   border-radius: 10px;
-  cursor: pointer;
   color: ${({ theme, isRecording }) => (isRecording ? 'black' : theme.recordingColor)};
+  cursor: pointer;
 `;
 
 export default Record;
