@@ -10,6 +10,4 @@ const Play = () => {
   return <audio src={audioURL} />;
 };
 
-const PlayContainer = styled.div``;
-
 export default Play;
