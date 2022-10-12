@@ -23,12 +23,10 @@ const PlayBtn = ({ isPlaying, setIsPlaying, isSaving, audioURL }) => {
     audioURL && (
       <PlayBtnContainer>
         <StartButton onClick={toggleAudio}>
-          {!isSaving && <span className='playBtn'>{isPlaying ? '중지' : '재생'}</span>}
+          {!isSaving && <span className='playBtn'>{!isSaving && isPlaying ? '중지' : '재생'}</span>}
           {isSaving && <span className='playBtn'> 저장 중...</span>}
         </StartButton>
-        <audio ref={audioElement} src={audioURL} onEnded={() => setIsPlaying(false)} onClick={toggleAudio}>
-          오디오 재생 x
-        </audio>
+        <audio ref={audioElement} src={audioURL} onEnded={() => setIsPlaying(false)} onClick={toggleAudio} />
       </PlayBtnContainer>
     )
   );
