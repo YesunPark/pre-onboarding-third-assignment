@@ -1,5 +1,6 @@
-import { useEffect, useRef, useState } from 'react';
-import { AiFillPlayCircle, AiOutlineArrowLeft } from 'react-icons/ai';
+import { useCallback, useEffect, useRef, useState } from 'react';
+import { AiOutlineArrowLeft } from 'react-icons/ai';
+import { BsStopCircle, BsPlayCircle } from 'react-icons/bs';
 import { ref, listAll, getDownloadURL } from 'firebase/storage';
 import styled from 'styled-components';
 import storage from '../../firebase/storage';
@@ -15,7 +16,7 @@ const Play = () => {
   const [curAudioURL, setCurAudioURL] = useState('');
   const [curAudioName, setCurAudioName] = useState('');
   const [audioList, setAudioList] = useState();
-  const audioRef = useRef(null);
+  const audioElement = useRef(null);
 
   useEffect(() => {
     (async () => {
@@ -38,10 +39,23 @@ const Play = () => {
     }
   };
 
-  useEffect(() => {
+  const playHandler = useCallback(() => {
     if (curAudioURL) {
-      audioRef.current.play();
+      audioElement.current.play();
+      setIsPlaying(true);
     }
+  }, [curAudioURL]);
+
+  const stopHandler = useCallback(() => {
+    if (curAudioURL) {
+      audioElement.current.pause();
+      audioElement.current.currentTime = 0;
+      setIsPlaying(false);
+    }
+  }, [curAudioURL]);
+
+  useEffect(() => {
+    playHandler();
   }, [curAudioURL]);
 
   return (
@@ -62,8 +76,8 @@ const Play = () => {
           ))}
       </ul>
       <PlayBar>
-        <audio src={curAudioURL} ref={audioRef} />
-        <AiFillPlayCircle size={40} />
+        <audio src={curAudioURL} ref={audioElement} onEnded={() => setIsPlaying(false)} />
+        {isPlaying ? <BsStopCircle onClick={stopHandler} size={40} /> : <BsPlayCircle onClick={playHandler} size={40} />}
       </PlayBar>
     </Container>
   );
