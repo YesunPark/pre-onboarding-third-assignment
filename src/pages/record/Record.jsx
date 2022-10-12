@@ -3,10 +3,10 @@ import { BsFillRecordFill, BsSquareFill } from 'react-icons/bs';
 import { ref, uploadBytes } from 'firebase/storage';
 import styled from 'styled-components';
 
-import PlayBtn from '../../components/record/PlayBtn';
-
 import storage from '../../firebase/storage';
+
 import RecordingMordal from '../../components/record/RecordingMordal';
+import PlayBtn from '../../components/record/PlayBtn';
 
 const Record = () => {
   const [isRecording, setIsRecording] = useState(false);
@@ -91,7 +91,7 @@ const Record = () => {
       </Wrapper>
       {isRecording && <RecordingMordal />}
       {isSaving && <p>저장중...</p>}
-      <div className='buttonContainer'>{!isRecording && <PlayBtn isPlaying={isPlaying} setIsPlaying={setIsPlaying} audioURL={audioURL} />}</div>
+      {!isRecording && <PlayBtn isPlaying={isPlaying} setIsPlaying={setIsPlaying} audioURL={audioURL} />}
     </>
   );
 };
@@ -101,10 +101,6 @@ const StyledRecord = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  /* 
-  div.buttonContainer {
-    display: flex;
-  } */
 
   input {
     width: 100%;

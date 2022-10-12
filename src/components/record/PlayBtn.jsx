@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import { useRef } from 'react';
 import { IoIosPlay, IoMdPause } from 'react-icons/io';
 import styled from 'styled-components';
 
