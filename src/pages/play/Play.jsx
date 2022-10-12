@@ -67,11 +67,21 @@ const Play = () => {
     setTime(0);
   }, [curAudioURL]);
 
+  const downloadHandler = () => {
+    const link = document.createElement('a');
+    link.href = curAudioURL;
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+  };
+
   return (
     <Container>
       <Title>
-        <AiOutlineArrowLeft size={20} onClick={() => navigate('/')} />
-        <h2>재생목록</h2>
+        <div className='container'>
+          <AiOutlineArrowLeft size={20} onClick={() => navigate('/')} />
+          <h2>재생목록</h2>
+        </div>
       </Title>
       <ul>
         {audioList &&
@@ -81,14 +91,17 @@ const Play = () => {
               storageRef={storageRef}
               selectHandler={selectHandler}
               curAudioName={curAudioName}
+              downloadHandler={downloadHandler}
             />
           ))}
       </ul>
       <PlayBar>
-        <audio src={curAudioURL} ref={audioElement} onEnded={stopHandler} />
-        <h3>{curAudioName}</h3>
-        <p>{time}s</p>
-        {isPlaying ? <BsStopCircle onClick={stopHandler} size={40} /> : <BsPlayCircle onClick={playHandler} size={40} />}
+        <div className='container'>
+          <audio src={curAudioURL} ref={audioElement} onEnded={stopHandler} />
+          <h3>{curAudioName}</h3>
+          <p>{time}s</p>
+          {isPlaying ? <BsStopCircle onClick={stopHandler} size={40} /> : <BsPlayCircle onClick={playHandler} size={40} />}
+        </div>
       </PlayBar>
     </Container>
   );
@@ -99,20 +112,27 @@ const Title = styled.div`
   left: 0;
   top: 0;
   padding: 20px;
-  display: flex;
-  align-items: center;
-  gap: 20px;
   z-index: 10;
   width: 100%;
   background-color: #3eacac;
   border-bottom: 1px solid white;
+
+  div.container {
+    width: 100%;
+    max-width: 600px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+  }
 `;
 
 const Container = styled.div`
-  padding-top: 20px;
+  position: relative;
+  z-index: 30;
 
   ul {
-    margin-top: 40px;
+    padding-top: 61px;
   }
 `;
 
@@ -121,13 +141,19 @@ const PlayBar = styled.div`
   bottom: 0;
   left: 0;
   width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 20px;
   padding: 10px;
   border-top: 1px solid white;
   background-color: #3eacac;
+
+  div.container {
+    width: 100%;
+    max-width: 600px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+  }
 
   h3 {
     width: 60%;
