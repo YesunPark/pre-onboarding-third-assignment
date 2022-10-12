@@ -2,10 +2,10 @@ import styled, { keyframes } from 'styled-components';
 
 const RecordingMordal = () => {
   return (
-    <MordalWrapper>
+    <ModalContainer>
       <span>On Air</span>
       <RedDot />
-    </MordalWrapper>
+    </ModalContainer>
   );
 };
 
@@ -18,19 +18,19 @@ const Blinking = keyframes`
   }
 
 `;
-const MordalWrapper = styled.div`
-  position: absolute;
-  top: 10%;
+const ModalContainer = styled.div`
   width: 50%;
   height: 50px;
   background: black;
   padding: 20px 40px;
+  margin: 0 auto;
   border-radius: 10px;
   display: flex;
   justify-content: center;
   align-items: center;
   gap: 10px;
 `;
+
 const RedDot = styled.div`
   width: 15px;
   height: 15px;

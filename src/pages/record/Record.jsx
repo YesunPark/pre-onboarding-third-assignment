@@ -104,17 +104,16 @@ const Record = () => {
         />
         <audio ref={audioElement} src={audioURL} onEnded={() => setIsPlaying(false)} />
         <div className='buttonContainer'>
-          <button onClick={toggleAudio}>재생</button>
+          <button onClick={toggleAudio}>{isPlaying ? '멈춤' : '재생'}</button>
         </div>
-        <p>{isPlaying ? '멈춤' : '재생'}</p>
-        {isSaving && <p>저장중...</p>}
       </StyledRecord>
       <Wrapper>
         <StartButton isRecording={isRecording} onClick={toggleRecord} disabled={isPlaying}>
-          {isRecording ? `Stop Recording` : `Start Recording`}
+          {isRecording ? <BsSquareFill size={30} /> : <BsFillRecordFill size={30} />}
         </StartButton>
-        {isRecording && <RecordingMordal />}
       </Wrapper>
+      {isRecording && <RecordingMordal />}
+      {isSaving && <p>저장중...</p>}
     </>
   );
 };
@@ -140,19 +139,18 @@ const Wrapper = styled.div`
   justify-content: center;
   align-items: center;
 `;
+
 const StartButton = styled.button`
-  font-weight: 600;
-  width: 300px;
-  font-size: 18px;
-  color: red;
-  background: black;
-  padding: 20px 40px;
+  margin-top: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 50%;
+  padding: 10px 40px;
   border: none;
   border-radius: 10px;
   cursor: pointer;
-  margin-top: 50%;
-  transform: ${({ isRecording }) => (isRecording ? `translateY(300px)` : `translateY(50%)`)};
-  transition: transform 0.5s ease-in-out;
+  color: ${({ theme, isRecording }) => (isRecording ? 'black' : theme.recordingColor)};
 `;
 
 export default Record;
