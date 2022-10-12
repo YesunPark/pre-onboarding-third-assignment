@@ -1,11 +1,11 @@
 import { useEffect, useRef, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { AiOutlineUnorderedList } from 'react-icons/ai';
 import { BsFillRecordFill, BsSquareFill } from 'react-icons/bs';
 import { ref, uploadBytes } from 'firebase/storage';
 import styled from 'styled-components';
 import storage from '../../firebase/storage';
 import RecordingMordal from '../../components/record/RecordingMordal';
-import { useNavigate } from 'react-router-dom';
 import PlayBtn from '../../components/record/PlayBtn';
 
 const Record = () => {
@@ -102,6 +102,16 @@ const Record = () => {
   );
 };
 
+const StyledRecord = styled.div`
+  padding-top: 100px;
+  display: flex;
+  flex-direction: column;
+
+  input {
+    width: 100%;
+  }
+`;
+
 const ListButton = styled.button`
   width: fit-content;
   aspect-ratio: 1 / 1;
@@ -113,21 +123,10 @@ const ListButton = styled.button`
   cursor: pointer;
 `;
 
-const StyledRecord = styled.div`
-  padding-top: 100px;
-  display: flex;
-  flex-direction: column;
-
-  input {
-    width: 100%;
-  }
-`;
-
 const ButtonWrapper = styled.div`
   position: relative;
   display: flex;
   flex-direction: column;
-  /* justify-content: center; */
   margin: auto;
 `;
 
