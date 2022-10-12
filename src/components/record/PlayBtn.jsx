@@ -2,9 +2,7 @@ import { useRef, useState } from 'react';
 import { IoIosPlay, IoMdPause } from 'react-icons/io';
 import styled from 'styled-components';
 
-const PlayBtn = ({ audioURL }) => {
-  const [isPlaying, setIsPlaying] = useState(false);
-
+const PlayBtn = ({ isPlaying, setIsPlaying, audioURL }) => {
   const audioElement = useRef(null);
 
   const toggleAudio = () => {
@@ -22,7 +20,7 @@ const PlayBtn = ({ audioURL }) => {
 
   return (
     <PlayBtnContainer>
-      <audio ref={audioElement} controls src={audioURL} onEnded={() => setIsPlaying(false)} onClick={toggleAudio}>
+      <audio ref={audioElement} src={audioURL} onEnded={() => setIsPlaying(false)} onClick={toggleAudio}>
         오디오 재생 x
       </audio>
       <span>{isPlaying ? '중지' : '재생'}</span>
