@@ -18,8 +18,13 @@ const StyledList = styled.li`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 20px 20px;
+  padding: 20px;
   background-color: ${({ isPlaying }) => (isPlaying ? '#63dada' : '#3eacac')};
+  cursor: pointer;
+
+  &:hover {
+    background-color: ${({ isPlaying }) => (isPlaying ? '#63dada' : '#48b6b6')};
+  }
 `;
 
 export default PlayList;

@@ -1,11 +1,13 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { AiOutlineArrowLeft } from 'react-icons/ai';
 import { BsStopCircle, BsPlayCircle } from 'react-icons/bs';
 import { ref, listAll, getDownloadURL } from 'firebase/storage';
 import styled from 'styled-components';
 import storage from '../../firebase/storage';
 import PlayList from '../../components/play/PlayList';
-import { useNavigate } from 'react-router-dom';
+import Spinner from '../../components/Spinner';
+import PlaySkeleton from '../../components/play/PlaySkeleton';
 
 const Play = () => {
   const navigate = useNavigate();
@@ -29,16 +31,18 @@ const Play = () => {
   }, []);
 
   const selectHandler = async storageRef => {
-    setIsLoading(true);
-    setCurAudioName(storageRef.name);
+    if (storageRef.name !== curAudioName) {
+      setIsLoading(true);
+      setCurAudioName(storageRef.name);
 
-    try {
-      const url = await getDownloadURL(storageRef);
-      setCurAudioURL(url);
-      setIsLoading(false);
-    } catch (error) {
-      console.log(error);
-      setIsLoading(false);
+      try {
+        const url = await getDownloadURL(storageRef);
+        setCurAudioURL(url);
+        setIsLoading(false);
+      } catch (error) {
+        console.log(error);
+        setIsLoading(false);
+      }
     }
   };
 
@@ -83,9 +87,10 @@ const Play = () => {
           <h2>재생목록</h2>
         </div>
       </Title>
-      <ul>
-        {audioList &&
-          audioList.map(storageRef => (
+
+      {audioList ? (
+        <ul>
+          {audioList.map(storageRef => (
             <PlayList //
               key={storageRef.name}
               storageRef={storageRef}
@@ -94,11 +99,15 @@ const Play = () => {
               downloadHandler={downloadHandler}
             />
           ))}
-      </ul>
+        </ul>
+      ) : (
+        <PlaySkeleton />
+      )}
+
       <PlayBar>
         <div className='container'>
           <audio src={curAudioURL} ref={audioElement} onEnded={stopHandler} />
-          <h3>{isLoading ? '불러오는 중...' : curAudioName}</h3>
+          <h3>{isLoading ? <Spinner /> : curAudioName}</h3>
           <p>{time}s</p>
           {isPlaying ? <BsStopCircle onClick={stopHandler} size={40} /> : <BsPlayCircle onClick={playHandler} size={40} />}
         </div>
@@ -116,6 +125,10 @@ const Title = styled.div`
   width: 100%;
   background-color: #3eacac;
   border-bottom: 1px solid white;
+
+  svg {
+    cursor: pointer;
+  }
 
   div.container {
     width: 100%;
@@ -161,6 +174,10 @@ const PlayBar = styled.div`
 
   p {
     word-break: keep-all;
+  }
+
+  svg {
+    cursor: pointer;
   }
 `;
 
