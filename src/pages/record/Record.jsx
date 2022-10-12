@@ -40,7 +40,13 @@ const Record = () => {
           try {
             const now = new Date();
 
-            const storageRef = ref(storage, `${now.getFullYear()}-${now.getMonth() + 1}-${now.getDate()}-${now.getHours()}-${now.getMinutes()}-${now.getMilliseconds()}.webm`);
+            const year = now.getFullYear();
+            const month = now.getMonth() + 1;
+            const date = now.getDate();
+            const hours = now.getHours();
+            const minute = now.getMinutes();
+
+            const storageRef = ref(storage, `${year}-${month}-${date}-${hours}-${minute}.webm`);
             setIsSaving(true);
             await uploadBytes(storageRef, blob);
             setIsSaving(false);
