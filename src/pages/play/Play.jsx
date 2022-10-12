@@ -38,7 +38,7 @@ const Play = () => {
     })();
   }, []);
 
-  const selectHandler = async storageRef => {
+  const handleSelect = async storageRef => {
     if (storageRef.name !== curAudioName) {
       setIsLoading(true);
       setCurAudioName(storageRef.name);
@@ -54,7 +54,7 @@ const Play = () => {
     }
   };
 
-  const playHandler = useCallback(() => {
+  const handlePlay = useCallback(() => {
     if (curAudioURL) {
       audioElement.current.play();
       setIsPlaying(true);
@@ -64,7 +64,7 @@ const Play = () => {
     }
   }, [curAudioURL]);
 
-  const stopHandler = useCallback(() => {
+  const handleStop = useCallback(() => {
     if (curAudioURL) {
       audioElement.current.pause();
       audioElement.current.currentTime = 0;
@@ -75,11 +75,11 @@ const Play = () => {
   }, [curAudioURL]);
 
   useEffect(() => {
-    playHandler();
+    handlePlay();
     setTime(0);
   }, [curAudioURL]);
 
-  const downloadHandler = () => {
+  const handleDownload = () => {
     const link = document.createElement('a');
     link.href = curAudioURL;
     document.body.appendChild(link);
@@ -87,7 +87,7 @@ const Play = () => {
     link.remove();
   };
 
-  const removeHandler = async () => {
+  const handleRemove = async () => {
     setIsListLoading(true);
     const removeRef = ref(storage, curAudioName);
 
@@ -117,10 +117,10 @@ const Play = () => {
             <PlayList //
               key={storageRef.name}
               storageRef={storageRef}
-              selectHandler={selectHandler}
+              handleSelect={handleSelect}
               curAudioName={curAudioName}
-              downloadHandler={downloadHandler}
-              removeHandler={removeHandler}
+              handleDownload={handleDownload}
+              handleRemove={handleRemove}
             />
           ))}
         </ul>
@@ -130,10 +130,10 @@ const Play = () => {
 
       <PlayBar>
         <div className='container'>
-          <audio src={curAudioURL} ref={audioElement} onEnded={stopHandler} />
+          <audio src={curAudioURL} ref={audioElement} onEnded={handleStop} />
           <h3>{isLoading ? <Spinner /> : curAudioName}</h3>
           <p>{time}s</p>
-          {isPlaying ? <BsStopCircle onClick={stopHandler} size={40} /> : <BsPlayCircle onClick={playHandler} size={40} />}
+          {isPlaying ? <BsStopCircle onClick={handleStop} size={40} /> : <BsPlayCircle onClick={handlePlay} size={40} />}
         </div>
       </PlayBar>
     </Container>

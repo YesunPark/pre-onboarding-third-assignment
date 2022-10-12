@@ -1,14 +1,14 @@
 import styled from 'styled-components';
 import { BsDownload, BsFillTrashFill } from 'react-icons/bs';
 
-const PlayList = ({ storageRef, selectHandler, curAudioName, downloadHandler, removeHandler }) => {
+const PlayList = ({ storageRef, handleSelect, curAudioName, handleDownload, handleRemove }) => {
   return (
-    <StyledList isPlaying={curAudioName === storageRef.name} onClick={() => selectHandler(storageRef)}>
+    <StyledList isPlaying={curAudioName === storageRef.name} onClick={() => handleSelect(storageRef)}>
       {storageRef.name}
       {curAudioName === storageRef.name && (
         <BtnContainer>
-          <DownloadIcon onClick={downloadHandler} />
-          <BsFillTrashFill onClick={removeHandler} />
+          <DownloadIcon onClick={handleDownload} />
+          <BsFillTrashFill onClick={handleRemove} />
         </BtnContainer>
       )}
     </StyledList>
