@@ -1,14 +1,15 @@
 import { useEffect, useRef, useState } from 'react';
 import { BsFillRecordFill, BsSquareFill } from 'react-icons/bs';
-import { ref, uploadBytes } from 'firebase/storage';
+import { ref, uploadBytes, listAll, getDownloadURL } from 'firebase/storage';
 import styled from 'styled-components';
 import storage from '../../firebase/storage';
 
-const Record = ({ audioURL, setAudioURL }) => {
+const Record = () => {
   const [isRecording, setIsRecording] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
 
+  const [audioURL, setAudioURL] = useState('');
   const mediaRecorderRef = useRef();
   const audioArray = useRef([]);
   const audioElement = useRef(null);
@@ -80,6 +81,17 @@ const Record = ({ audioURL, setAudioURL }) => {
       }
     }
   };
+
+  useEffect(() => {
+    (async () => {
+      const { items } = await listAll(ref(storage));
+
+      if (!items.length) return;
+
+      const url = await getDownloadURL(items.slice(-1)[0]);
+      setAudioURL(url);
+    })();
+  }, []);
 
   return (
     <StyledRecord>

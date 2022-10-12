@@ -7,14 +7,12 @@ import GlobalStyle from './styles/GlobalStyle';
 import theme from './styles/theme';
 
 const App = () => {
-  const [audioURL, setAudioURL] = useState('');
-
   return (
     <ThemeProvider theme={theme}>
       <GlobalStyle />
       <Routes>
-        <Route path='/' element={<Record audioURL={audioURL} setAudioURL={setAudioURL} />} />
-        <Route path='/play' element={<Play audioURL={audioURL} />} />
+        <Route path='/' element={<Record />} />
+        <Route path='/play' element={<Play />} />
       </Routes>
     </ThemeProvider>
   );
