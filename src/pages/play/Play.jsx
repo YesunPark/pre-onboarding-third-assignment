@@ -13,7 +13,7 @@ const Play = () => {
   const navigate = useNavigate();
 
   const [isPlaying, setIsPlaying] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isAudioLoading, setIsAudioLoading] = useState(false);
   const [isListLoading, setIsListLoading] = useState(false);
 
   const [curAudioURL, setCurAudioURL] = useState('');
@@ -40,16 +40,16 @@ const Play = () => {
 
   const handleSelect = async storageRef => {
     if (storageRef.name !== curAudioName) {
-      setIsLoading(true);
+      setIsAudioLoading(true);
       setCurAudioName(storageRef.name);
 
       try {
         const url = await getDownloadURL(storageRef);
         setCurAudioURL(url);
-        setIsLoading(false);
+        setIsAudioLoading(false);
       } catch (error) {
         console.log(error);
-        setIsLoading(false);
+        setIsAudioLoading(false);
       }
     }
   };
@@ -131,7 +131,7 @@ const Play = () => {
       <PlayBar>
         <div className='container'>
           <audio src={curAudioURL} ref={audioElement} onEnded={handleStop} />
-          <h3>{isLoading ? <Spinner /> : curAudioName}</h3>
+          <h3>{isAudioLoading ? <Spinner /> : curAudioName}</h3>
           <p>{time}s</p>
           {isPlaying ? <BsStopCircle onClick={handleStop} size={40} /> : <BsPlayCircle onClick={handlePlay} size={40} />}
         </div>
