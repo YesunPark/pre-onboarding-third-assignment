@@ -111,7 +111,7 @@ const Play = () => {
     <Container>
       <Title>
         <div className='container'>
-          <AiOutlineArrowLeft size={20} onClick={() => navigate('/')} />
+          <AiOutlineArrowLeft size={30} onClick={() => navigate('/')} />
           <h2>재생목록</h2>
         </div>
       </Title>
@@ -167,7 +167,7 @@ const Container = styled.div`
   z-index: 30;
 
   ul {
-    padding-top: 61px;
+    padding-top: 71px;
   }
 `;
 

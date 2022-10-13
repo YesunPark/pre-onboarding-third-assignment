@@ -1,11 +1,11 @@
 import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { AiOutlineUnorderedList } from 'react-icons/ai';
-import { BsFillRecordFill, BsSquareFill } from 'react-icons/bs';
+import { BsFillRecordFill, BsSquareFill, BsList } from 'react-icons/bs';
 import { ref, uploadBytes } from 'firebase/storage';
 import styled from 'styled-components';
 import storage from '../../firebase/storage';
-import RecordingMordal from '../../components/record/RecordingMordal';
+import RecordingModal from '../../components/record/RecordingModal';
 import PlayBtn from '../../components/record/PlayBtn';
 import DownloadBtn from '../../components/record/DownloadBtn';
 
@@ -66,9 +66,7 @@ const Record = () => {
         recorder.start();
         mediaRecorderRef.current = recorder;
 
-        timerId.current = setInterval(() => {
-          setTimer(prev => prev + 1);
-        }, 1000);
+        timerId.current = setInterval(() => setTimer(prev => prev + 1), 1000);
       } catch (error) {
         console.log(error);
       }
@@ -86,12 +84,18 @@ const Record = () => {
   return (
     <>
       <StyledRecord>
-        <ListButton onClick={() => navigate('/play')}>
-          <AiOutlineUnorderedList size={30} />
-        </ListButton>
-        <p>최대 녹음 시간 {timeMaxValue}s</p>
-        <p>현재 녹음 시간 {timer}s</p>
+        <ListButton onClick={() => navigate('/play')} size={30} />
+        <TimeParagraph>
+          최대 녹음 시간 <span> {timeMaxValue}s</span>
+        </TimeParagraph>
         <input type='range' onChange={({ target: { value } }) => setTimeMaxValue(Number(value))} max={100} min={3} defaultValue={20} disabled={isRecording} />
+        <Description>
+          동그라미를 움직여서
+          <br /> 최대 녹음시간을 설정할 수 있어요!
+        </Description>
+        <TimeParagraph>
+          현재 녹음 시간 <span>{timer}s</span>
+        </TimeParagraph>
       </StyledRecord>
       <ButtonWrapper>
         <StartButton isRecording={isRecording} onClick={toggleRecord} disabled={isPlaying}>
@@ -105,30 +109,47 @@ const Record = () => {
           </>
         )}
       </ButtonWrapper>
-      {isRecording && <RecordingMordal />}
+      {isRecording && <RecordingModal />}
     </>
   );
 };
 
 const StyledRecord = styled.div`
-  padding: 20px 10px 0 10px;
+  padding: 20px;
   display: flex;
   flex-direction: column;
+  align-items: flex-end;
 
   input {
     width: 100%;
+    margin-bottom: 20px;
   }
 `;
 
-const ListButton = styled.button`
-  width: fit-content;
-  aspect-ratio: 1 / 1;
-  border: 2px solid white;
+const ListButton = styled(BsList)`
+  padding: 0;
+  border: none;
   background-color: transparent;
   color: white;
-  border-radius: 10px;
-  margin-bottom: 20px;
+  margin-bottom: 40px;
   cursor: pointer;
+`;
+
+const TimeParagraph = styled.p`
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  font-size: 20px;
+  margin-bottom: 20px;
+`;
+
+const Description = styled.p`
+  width: 100%;
+  word-break: keep-all;
+  text-align: center;
+  line-height: 1.4;
+  margin-bottom: 40px;
+  color: ${({ theme }) => theme.mainColor};
 `;
 
 const ButtonWrapper = styled.div`
