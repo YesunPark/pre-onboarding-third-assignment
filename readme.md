@@ -72,6 +72,8 @@ npm run dev
 
 ## ✅ 녹음 페이지
 
+![record1](https://user-images.githubusercontent.com/102274941/195581351-9f6ffae7-9d83-48ed-9f1c-498c018981f4.png)
+
 - 오디오 녹음, 재생 기능 구현
 - 오디오 녹음 중일 때, 녹음 중 UI 구현
 - 녹음 중에는 녹음이 되고 있는 시간 표시
@@ -81,6 +83,8 @@ npm run dev
 - 오디오 파일을 다운로드 기능 구현
 
 ## ✅ 플레이 리스트 페이지
+
+![record2](https://user-images.githubusercontent.com/102274941/195581362-197c6ac5-f76e-45d3-bd23-94da414e9484.png)
 
 - firebase storage에서 저장된 파일들을 불러와 리스트 UI 구현
 - 리스트를 선택하여 재생하고 싶은 음원을 재생하는 기능, 재생중인 시간 표시 기능 구현
