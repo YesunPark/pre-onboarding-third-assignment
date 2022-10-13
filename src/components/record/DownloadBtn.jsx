@@ -1,10 +1,10 @@
 import { StartButton } from '../../pages/record/Record';
 
-const DownloadBtn = ({ audioURL }) => {
+const DownloadBtn = ({ audioURL, audioName }) => {
   const clickDownloadBtn = () => {
     const a = document.createElement('a');
     a.href = audioURL;
-    a.download = `음성녹음.mp3`;
+    a.download = `${audioName}.mp3`;
     a.click();
     a.remove();
   };

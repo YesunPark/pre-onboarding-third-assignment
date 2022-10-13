@@ -16,6 +16,7 @@ const Record = () => {
   const [isPlaying, setIsPlaying] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
   const [audioURL, setAudioURL] = useState('');
+  const [audioName, setAudioName] = useState('');
   const mediaRecorderRef = useRef();
   const audioArray = useRef([]);
 
@@ -53,6 +54,7 @@ const Record = () => {
             const seconds = now.getSeconds();
 
             const storageRef = ref(storage, `${year}-${month}-${date}-${hours}-${minute}-${seconds}.webm`);
+            setAudioName(`${year}-${month}-${date}-${hours}-${minute}-${seconds}`);
             setIsSaving(true);
             await uploadBytes(storageRef, blob);
             setIsSaving(false);
@@ -99,7 +101,7 @@ const Record = () => {
         {!isRecording && (
           <>
             <PlayBtn isPlaying={isPlaying} setIsPlaying={setIsPlaying} isSaving={isSaving} audioURL={audioURL} />
-            {!isSaving && !isPlaying && <DownloadBtn audioURL={audioURL} />}
+            {!isSaving && !isPlaying && <DownloadBtn audioURL={audioURL} audioName={audioName} />}
           </>
         )}
       </ButtonWrapper>
