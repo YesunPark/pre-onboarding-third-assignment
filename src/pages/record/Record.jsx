@@ -116,7 +116,6 @@ const StyledRecord = styled.div`
   padding: 20px;
   display: flex;
   flex-direction: column;
-  align-items: flex-end;
 
   input {
     width: 100%;
