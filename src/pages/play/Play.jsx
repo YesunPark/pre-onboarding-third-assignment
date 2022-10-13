@@ -111,7 +111,7 @@ const Play = () => {
     <Container>
       <Title>
         <div className='container'>
-          <AiOutlineArrowLeft size={20} onClick={() => navigate('/')} />
+          <AiOutlineArrowLeft size={30} onClick={() => navigate('/')} />
           <h2>재생목록</h2>
         </div>
       </Title>

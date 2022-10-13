@@ -24,6 +24,7 @@ const ModalContainer = styled.div`
   background: black;
   padding: 20px 40px;
   margin: 0 auto;
+  margin-top: 20px;
   border-radius: 10px;
   display: flex;
   justify-content: center;
