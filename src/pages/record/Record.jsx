@@ -29,7 +29,7 @@ const Record = () => {
         const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
         setIsRecording(true);
 
-        const recorder = new MediaRecorder(stream);
+        const recorder = new MediaRecorder(stream, { mimeType: 'audio/webm' });
 
         recorder.ondataavailable = ({ data }) => audioArray.current.push(data);
 

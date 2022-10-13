@@ -56,7 +56,12 @@ const Play = () => {
 
   const handlePlay = useCallback(() => {
     if (curAudioURL) {
-      audioElement.current.play();
+      const playPromise = audioElement.current.play();
+
+      if (playPromise !== undefined) {
+        playPromise.then(_ => {}).catch(error => {});
+      }
+
       setIsPlaying(true);
 
       clearInterval(timerId.current);
@@ -114,14 +119,7 @@ const Play = () => {
       {!isListLoading && audioList ? (
         <ul>
           {audioList.map(storageRef => (
-            <PlayList //
-              key={storageRef.name}
-              storageRef={storageRef}
-              handleSelect={handleSelect}
-              curAudioName={curAudioName}
-              handleDownload={handleDownload}
-              handleRemove={handleRemove}
-            />
+            <PlayList key={storageRef.name} storageRef={storageRef} handleSelect={handleSelect} curAudioName={curAudioName} handleDownload={handleDownload} handleRemove={handleRemove} />
           ))}
         </ul>
       ) : (
@@ -130,7 +128,7 @@ const Play = () => {
 
       <PlayBar>
         <div className='container'>
-          <audio src={curAudioURL} ref={audioElement} onEnded={handleStop} />
+          <audio ref={audioElement} onEnded={handleStop} src={curAudioURL} />
           <h3>{isAudioLoading ? <Spinner /> : curAudioName}</h3>
           <p>{time}s</p>
           {isPlaying ? <BsStopCircle onClick={handleStop} size={40} /> : <BsPlayCircle onClick={handlePlay} size={40} />}
